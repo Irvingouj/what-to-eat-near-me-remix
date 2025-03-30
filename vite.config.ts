@@ -9,6 +9,9 @@ declare module "@remix-run/node" {
 }
 
 export default defineConfig({
+  server: {
+    allowedHosts: ["desktop.tailf4f4d.ts.net"],
+  },
   plugins: [
     remix({
       future: {
