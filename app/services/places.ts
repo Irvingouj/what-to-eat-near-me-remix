@@ -1,6 +1,5 @@
-import { NearbyResponse } from "src/api/nearby/types";
-import { Place } from "src/api/nearby/types";
-import { HttpError } from "src/api/errors/error";
+import { NearbyResponse, Place } from "common/type/nearby";
+import { HttpError } from "common/errors/error";
 export async function searchNearbyPlaces(
   latitude: number,
   longitude: number,

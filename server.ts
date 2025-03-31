@@ -4,8 +4,8 @@ import type { ServerBuild } from "@remix-run/node";
 import compression from "compression";
 import express from "express";
 import morgan from "morgan";
-import apiRouter from './src/api';
-import { startupCheck } from "./src/utils/startup";
+import apiRouter from './src/api/index.js';
+import { startupCheck } from "./src/utils/startup.js";
 let viteDevServer: ViteDevServer | undefined;
 
 const initViteServer = async (): Promise<ViteDevServer | undefined> => {
@@ -44,11 +44,17 @@ const initServer = async () => {
   await startupCheck();
 
   // API routes must come before any static or Remix middleware
-  app.use('/api', (req, res, next) => {
+  app.use('/api', (req, _, next) => {
     // Log API requests
     console.log(`API Request: ${req.method} ${req.url}`);
     next();
   }, apiRouter);
+
+
+
+  // the build output will have three folders: client, node, and server, this file will be in the node folder
+  // so we need to import the server build from the node folder in production
+  const importPath = process.env.NODE_ENV === "production" ? "../server/index.js" : "./index.js";
 
   // Remix handler comes last
   const remixHandler = createRequestHandler({
@@ -57,7 +63,9 @@ const initServer = async () => {
           if (!viteDevServer) throw new Error('Vite server not initialized');
           return viteDevServer.ssrLoadModule("virtual:remix/server-build") as Promise<ServerBuild>;
         }
-      : await import("./build/server/index.js") as unknown as ServerBuild,
+      // after build, the server build is in ./index.js relative to server.js
+      // eslint-disable-next-line import/no-unresolved
+      : await import(importPath) as unknown as ServerBuild,
   });
 
   // All other routes go to Remix

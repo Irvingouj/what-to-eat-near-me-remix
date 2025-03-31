@@ -1,9 +1,9 @@
 import { Authenticator } from "remix-auth";
 import { GoogleStrategy } from "remix-auth-google";
-import { sessionStorage } from "./session.server";
+import { sessionStorage } from "./session.server.js";
 import { eq } from 'drizzle-orm';
-import { users, tokens } from "../../src/db/schema";
-import { db } from "../../src/db";
+import { users, tokens } from "../db/schema.js";
+import { db } from "../db/index.js";
 
 // Define the User type based on our Drizzle schema
 type Cookie = Pick<typeof users.$inferSelect, "id">;
@@ -45,9 +45,7 @@ authenticator.use(
       // Update or create token
       const expiresAt = new Date(Date.now() + extraParams.expires_in * 1000);
 
-      const existingToken = await db.query.tokens.findFirst({
-        where: eq(tokens.userId, user.id),
-      });
+      const existingToken = await db.select().from(tokens).where(eq(tokens.userId, user.id)).limit(1).then(rows => rows[0]);
 
       if (existingToken) {
         await db.update(tokens)

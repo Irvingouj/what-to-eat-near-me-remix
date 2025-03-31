@@ -1,6 +1,6 @@
 import express from 'express';
-import { nearbyRouter } from './nearby';
-import { authMiddleware } from './middleware/auth';
+import { nearbyRouter } from './nearby/index.js';
+import { authMiddleware } from './middleware/auth.js';
 
 const router = express.Router();
 

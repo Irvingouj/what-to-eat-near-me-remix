@@ -54,7 +54,7 @@ export function ReviewsSection({ reviews }: ReviewsSectionProps) {
                 </div>
               </div>
             </div>
-            <ReviewText text={review.text.text} />
+            <ReviewText text={review?.text?.text} />
           </div>
         ))}
       </div>

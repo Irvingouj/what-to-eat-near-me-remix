@@ -1,9 +1,9 @@
 import { LoaderFunction, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { eq } from "drizzle-orm";
-import { db } from "src/db";
-import { users } from "src/db/schema";
-import { authenticator } from "~/services/auth.server";
+import { db } from "common/db";
+import { users } from "common/db/schema";
+import { authenticator } from "common/auth/auth.server";
 
 
 

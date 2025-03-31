@@ -1,0 +1,37 @@
+// tsconfig.server.json (used by tsc to build ONLY your Express server code)
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "module": "ESNext",
+      "moduleResolution": "node",
+      "outDir": "./build/node",
+      "noEmit": false,          // We DO want to emit JS for our server
+      "sourceMap": false,
+      "allowJs": true,
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "baseUrl": ".",
+  
+      // Let server code import from `src/*` and (optionally) from `app/services/*`
+      "paths": {
+        "src/*": ["src/*"],
+      }
+    },
+  
+    "include": [
+      "server.ts",     // Your Express server entry
+      "src/**/*",      // All your server code
+    ],
+    
+    // Exclude everything else so tsc doesn’t try to compile front-end TSX
+    "exclude": [
+      "node_modules",
+      "build",
+      // If you want to be super explicit, exclude other app folders
+      "app/components",
+      "app/context",
+      "app/hooks",
+      "app/routes"
+    ]
+  }
+  

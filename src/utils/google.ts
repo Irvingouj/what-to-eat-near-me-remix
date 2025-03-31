@@ -1,4 +1,4 @@
-import { Photo } from "src/api/nearby/types";
+import { Photo } from "../../common/type/nearby.js";
 
 const placesUrl = new URL('https://places.googleapis.com');
 

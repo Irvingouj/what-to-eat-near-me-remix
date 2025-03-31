@@ -1,10 +1,10 @@
 import express from "express";
-import { searchNearby } from "../../services/nearby";
-import { nearbyQuerySchema, type NearbyResponse } from "./types";
+import { searchNearby } from "../../services/nearby.js";
 import type { Request, Response } from "express";
-import { serverGetImageUrl } from "src/utils/google";
+import { serverGetImageUrl } from "../../utils/google.js";
 import axios, { isAxiosError } from "axios";
-import { getAuthUser } from "src/utils/remix";
+import { getAuthUser } from "../../utils/remix.js";
+import { nearbyQuerySchema, NearbyResponse } from "../../../common/type/nearby.js";
 
 const router = express.Router();
 router.get('/', async (req: Request, res: Response) => {

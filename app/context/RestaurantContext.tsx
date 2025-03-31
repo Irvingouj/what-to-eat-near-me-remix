@@ -4,8 +4,9 @@ import type { Place } from "src/api/nearby/types";
 import { searchNearbyPlaces } from "~/services/places";
 import { useGeolocation } from "~/hooks/useGeolocation";
 import { EqSet } from "src/utils/eq-set";
-import { HttpError } from "src/api/errors/error";
+import { HttpError } from "common/errors/error";
 import { useNavigate } from "@remix-run/react";
+import { SearchRange } from "~/types/range";
 interface Filters {
     excludeFastFood: boolean;
     vegetarianOnly: boolean;
@@ -46,6 +47,7 @@ function useRestaurantContextCreator() {
     const [state, setState] = useState({
         currentPlace: null as PlaceWithSeen | null,
         error: null as Error | null,
+        searchRange: 1500 as SearchRange,
         filters: {
             excludeFastFood: false,
             vegetarianOnly: false,
@@ -66,9 +68,9 @@ function useRestaurantContextCreator() {
             const places = await searchNearbyPlaces(
                 latitude,
                 longitude,
-                1500,
+                state.searchRange,
                 {
-                    maxResults: 20,
+                    maxResults: 50,
                     types: ["restaurant"]
                 }
             );
@@ -140,6 +142,12 @@ function useRestaurantContextCreator() {
 
     }, [state.places, state.currentPlace, searchRestaurant, state.filters, navigate]);
 
+    const updateSearchRange = useCallback((newRange: SearchRange) => {
+        setState(prev => ({
+            ...prev,
+            searchRange: newRange
+        }));
+    }, []);
 
     return {
         ...state,
@@ -147,6 +155,7 @@ function useRestaurantContextCreator() {
         error: state.error || geoError,
         updateFilters,
         chooseRestaurant,
+        updateSearchRange
     };
 }
 

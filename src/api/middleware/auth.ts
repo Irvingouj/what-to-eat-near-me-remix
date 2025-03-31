@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { getAuthUser } from "src/utils/remix";
+import { getAuthUser } from "../../utils/remix.js";
 
 const PROTECTED_ROUTES = ['/nearby'];
 

@@ -1,4 +1,4 @@
-import { authenticator } from "~/services/auth.server";
+import { authenticator } from "../../common/auth/auth.server.js";
 
 export async function getAuthUser(req: import("express").Request) {
   const origin = `${req.protocol}://${req.get("host")}`;

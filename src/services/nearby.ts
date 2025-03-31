@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { NearbyResponse } from 'src/api/nearby/types';
+import { NearbyResponse } from '../../common/type/nearby.js';
 
 // Input validation schema
 const searchParamsSchema = z.object({

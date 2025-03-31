@@ -1,4 +1,4 @@
-import { startupCheck as startupCheckDb } from "src/db";
+import { startupCheck as startupCheckDb } from "../../common/db/index.js";
 const MUST_BE_SET_ENV = [
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",

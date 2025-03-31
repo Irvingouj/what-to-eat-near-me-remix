@@ -1,6 +1,6 @@
 import { Form } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/node";
-import { authenticator } from "~/services/auth.server";
+import { authenticator } from "common/auth/auth.server";
 
 export const loader: LoaderFunction = async ({ request }) => {
   // If the user is already authenticated redirect to /
