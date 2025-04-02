@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, ReactNode, useCallback, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import type { Place } from "src/api/nearby/types";
 import { searchNearbyPlaces } from "~/services/places";
 import { useGeolocation } from "~/hooks/useGeolocation";
 import { EqSet } from "src/utils/eq-set";
 import { HttpError } from "common/errors/error";
 import { useNavigate } from "@remix-run/react";
 import { SearchRange } from "~/types/range";
+import { Place } from "common/type/nearby";
+
 interface Filters {
     excludeFastFood: boolean;
     vegetarianOnly: boolean;
@@ -30,7 +31,7 @@ function filterPlaces(places: PlaceWithSeen[], filters: Filters): PlaceWithSeen[
             return false;
         }
         if (filters.noPork) {
-            return !place.types.some(type =>
+            return !place.types.some((type: string) =>
                 ["pork_restaurant", "bbq_restaurant"].includes(type)
             );
         }
@@ -65,15 +66,13 @@ function useRestaurantContextCreator() {
             if (!position) throw new Error("Location not available");
             setState(prev => ({ ...prev, loading: true, error: null }));
             const { latitude, longitude } = position.coords;
-            const places = await searchNearbyPlaces(
+            const places = await searchNearbyPlaces({
                 latitude,
                 longitude,
-                state.searchRange,
-                {
-                    maxResults: 50,
-                    types: ["restaurant"]
-                }
-            );
+                radius: state.searchRange,
+                maxResults: 20,
+                types: ["restaurant"]
+            });
             return places;
         },
         enabled: false, // Don't run automatically

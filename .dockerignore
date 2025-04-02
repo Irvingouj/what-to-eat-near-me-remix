@@ -1,0 +1,34 @@
+# Version control
+.git
+.gitignore
+
+# Build artifacts
+build/
+node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Docker related
+Dockerfile
+.dockerignore
+
+# Development files
+.vscode/
+.cursor/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database files
+*.sqlite
+*.db
+
+# Misc
+README.md
+LICENSE
+*.md 

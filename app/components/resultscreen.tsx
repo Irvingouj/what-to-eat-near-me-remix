@@ -1,4 +1,4 @@
-import { Place } from "src/api/nearby/types";
+import { Place } from "common/type/nearby";
 import { useRestaurant } from "~/context/RestaurantContext";
 import { RestaurantHeader } from "./result/restaurant-header";
 import { PhotoGallery } from "./result/photo-gallery";
@@ -13,7 +13,7 @@ interface ResultScreenProps {
   onOpenFilter: () => void;
 }
 
-export function ResultScreen({ place, onOpenFilter }: ResultScreenProps) {
+export function ResultScreen({ place }: ResultScreenProps) {
   const { chooseRestaurant } = useRestaurant();
 
   return (
@@ -76,13 +76,16 @@ export function ResultScreen({ place, onOpenFilter }: ResultScreenProps) {
 
       {/* Sticky Buttons Container */}
       <div className="fixed bottom-6 right-6 flex gap-3 z-50">
+
+
+        {/* not finished 
         <button
           type="button"
           onClick={onOpenFilter}
           className="bg-white text-red-600 py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"
         >
           <span className="mr-1">⚙️</span> Filter
-        </button>
+        </button> */}
 
         <button
           type="button"

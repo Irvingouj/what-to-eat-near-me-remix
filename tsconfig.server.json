@@ -6,7 +6,7 @@
       "moduleResolution": "node",
       "outDir": "./build/node",
       "noEmit": false,          // We DO want to emit JS for our server
-      "sourceMap": false,
+      "sourceMap": true,
       "allowJs": true,
       "resolveJsonModule": true,
       "esModuleInterop": true,

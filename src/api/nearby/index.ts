@@ -3,19 +3,11 @@ import { searchNearby } from "../../services/nearby.js";
 import type { Request, Response } from "express";
 import { serverGetImageUrl } from "../../utils/google.js";
 import axios, { isAxiosError } from "axios";
-import { getAuthUser } from "../../utils/remix.js";
 import { nearbyQuerySchema, NearbyResponse } from "../../../common/type/nearby.js";
 
 const router = express.Router();
 router.get('/', async (req: Request, res: Response) => {
   try {
-
-    const authenticated = await getAuthUser(req); 
-
-    if (!authenticated) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-
 
     // Validate and parse query parameters
     const { latitude, longitude, radius, maxResults, types } = nearbyQuerySchema.parse(req.query);

@@ -24,3 +24,7 @@ export async function getAuthUser(req: import("express").Request) {
 
   return authenticator.isAuthenticated(remixRequest);
 }
+
+export async function removeSessionStorage(res: import("express").Response) {
+  res.clearCookie(authenticator.sessionKey);
+}

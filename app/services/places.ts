@@ -1,20 +1,19 @@
-import { NearbyResponse, Place } from "common/type/nearby";
+import { NearbyQueryParams, NearbyResponse, Place } from "common/type/nearby";
 import { HttpError } from "common/errors/error";
-export async function searchNearbyPlaces(
-  latitude: number,
-  longitude: number,
-  radius: number = 1500,
-  options: {
-    maxResults?: number;
-    types?: string[];
-  } = {}
-): Promise<Place[]> {
+
+export async function searchNearbyPlaces({
+  latitude,
+  longitude,
+  radius,
+  maxResults,
+  types
+}: NearbyQueryParams): Promise<Place[]> {
   const params = new URLSearchParams({
     latitude: latitude.toString(),
     longitude: longitude.toString(),
     radius: radius.toString(),
-    ...(options.maxResults && { maxResults: options.maxResults.toString() }),
-    ...(options.types && { types: options.types.join(",") })
+    ...(maxResults && { maxResults: maxResults.toString() }),
+    ...(types && { types: types.join(",") })
   });
 
   const response = await fetch(`/api/nearby?${params}`);

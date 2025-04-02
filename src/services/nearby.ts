@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { NearbyResponse } from '../../common/type/nearby.js';
 
 // Input validation schema
-const searchParamsSchema = z.object({
+export const searchParamsSchema = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   radius: z.number().min(0).max(50000), // max 50km radius
@@ -17,14 +17,6 @@ export const searchNearby = async (
   options: { maxResults?: number; types?: string[] } = {}
 ) => {
   try {
-    // Validate input parameters
-    const params = searchParamsSchema.parse({
-      latitude,
-      longitude,
-      radius,
-      maxResults: options.maxResults,
-      types: options.types
-    });
 
     // Combine all field masks
     const fieldMask = [
@@ -105,15 +97,15 @@ export const searchNearby = async (
         'X-Goog-FieldMask': fieldMask
       },
       body: JSON.stringify({
-        includedTypes: params.types,
-        maxResultCount: params.maxResults,
+        includedTypes: options.types,
+        maxResultCount: options.maxResults,
         locationRestriction: {
           circle: {
             center: {
-              latitude: params.latitude,
-              longitude: params.longitude
+              latitude: latitude,
+              longitude: longitude
             },
-            radius: params.radius
+            radius: radius
           }
         },
         rankPreference: "DISTANCE"
