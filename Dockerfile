@@ -47,7 +47,11 @@ EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/ || exit 1
+  CMD curl -f http://localhost:3000/api/health || exit 1
+
+# Copy drizzle config for migrations
+COPY drizzle.config.ts ./
+COPY common/db/schema.ts ./
 
 # Start the server
 CMD ["node", "./build/node/server.js"] 
