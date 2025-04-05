@@ -52,6 +52,7 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
 # Copy drizzle config for migrations
 COPY drizzle.config.ts ./
 COPY common/db/schema.ts ./
+COPY drizzle/ ./drizzle
 
 # Start the server
 CMD ["node", "./build/node/server.js"] 
