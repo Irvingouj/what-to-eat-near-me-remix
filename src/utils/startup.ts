@@ -9,11 +9,18 @@ const MUST_BE_SET_ENV = [
 
 
 export const startupCheck = async () => {
-    await startupCheckDb();
-    MUST_BE_SET_ENV.forEach((env) => {
-        if (!process.env[env]) {
-            console.error(`${env} is not set`);
-            process.exit(1);
+    try {
+        for (const env of MUST_BE_SET_ENV) {
+            if (!process.env[env]) {
+                console.error(`${env} is not set`);
+                process.exit(1);
+            }
         }
-    });
+        await startupCheckDb();
+    } catch (error) {
+        console.error('Startup check failed', error);
+        process.exit(1);
+    }
+
+    console.log('Startup check passed');
 }

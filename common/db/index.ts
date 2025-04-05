@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import pkg from 'pg';
 import * as schema from './schema.js';
+import { sql } from 'drizzle-orm';
 
 const { Pool } = pkg;
 
@@ -33,16 +34,18 @@ export function getDb() {
 }
 
 export async function startupCheck() {
-  // Test database connection on startup
-  getPool().connect()
-    .then((client) => {
-      console.log('Successfully connected to the database');
-      client.release();
-    })
-    .catch((err) => {
-      console.error('Failed to connect to the database:', err);
-      process.exit(1);
-    });
+  try {
+    // Test database connection on startup
+    await getPool().connect()
+
+    const db = getDb();
+    await db.execute(sql`SELECT 1`);
+  } catch (error) {
+    console.error('Database is not ready', error);
+    process.exit(1);
+  } 
+
+  console.log('Database is ready');
 }
 
 // Export the db instance for convenience
