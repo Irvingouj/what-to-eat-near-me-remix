@@ -1,5 +1,5 @@
 import { NearbyQueryParams, NearbyResponse, Place } from "common/type/nearby";
-import { HttpError } from "common/errors/error";
+import { ApiError } from "common/errors/error";
 
 export async function searchNearbyPlaces({
   latitude,
@@ -19,7 +19,7 @@ export async function searchNearbyPlaces({
   const response = await fetch(`/api/nearby?${params}`);
   if (!response.ok) {
     const error = await response.json();
-    throw new HttpError(error.message || "Failed to fetch nearby places", response.status);
+    throw new ApiError(error.message || "Failed to fetch nearby places", response.status);
   }
 
   const data = await response.json() as NearbyResponse;

@@ -1,4 +1,5 @@
 import { startupCheck as startupCheckDb } from "../../common/db/index.js";
+import { initConfig } from "../../common/config.js";
 const MUST_BE_SET_ENV = [
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
@@ -17,6 +18,7 @@ export const startupCheck = async () => {
             }
         }
         await startupCheckDb();
+        await initConfig();
     } catch (error) {
         console.error('Startup check failed', error);
         process.exit(1);

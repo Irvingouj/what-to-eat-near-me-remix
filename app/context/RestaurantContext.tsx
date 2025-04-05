@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { searchNearbyPlaces } from "~/services/places";
 import { useGeolocation } from "~/hooks/useGeolocation";
 import { EqSet } from "src/utils/eq-set";
-import { HttpError } from "common/errors/error";
+import { ApiError } from "common/errors/error";
 import { useNavigate } from "@remix-run/react";
 import { SearchRange } from "~/types/range";
 import { Place } from "common/type/nearby";
@@ -127,7 +127,7 @@ function useRestaurantContextCreator() {
                         error: error
                     }));
 
-                    if (error instanceof HttpError && error.statusCode === 401) {
+                    if (error instanceof ApiError && error.statusCode === 401) {
                         navigate("/auth/login");
                         return;
                     }

@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, varchar, jsonb, index, customType } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, varchar, jsonb, index, customType, integer } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
     id: text('id').primaryKey(),
@@ -39,3 +39,21 @@ export const places = pgTable('places', {
 }, (table) => [
     index('location').on(table.location),
 ]);
+
+export const rateLimits = pgTable('rate_limits', {
+    id: integer('id').primaryKey().notNull().generatedByDefaultAsIdentity(),
+    key: text('key').notNull(),
+    type: varchar('type', { length: 10 }).notNull(),
+    hits: text('hits').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+}, (table) => [
+    index('key_type_idx').on(table.key, table.type),
+]);
+
+export const appConfig = pgTable('app_config', {
+    id: integer('id').primaryKey().notNull().generatedByDefaultAsIdentity(),
+    config: jsonb('config').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+});
+

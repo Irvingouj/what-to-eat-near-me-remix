@@ -1,6 +1,6 @@
 import { Authenticator } from "remix-auth";
 import { GoogleStrategy } from "remix-auth-google";
-import { sessionStorage } from "./session.server.js";
+import { getSessionStorage } from "./session.server.js";
 import { eq } from 'drizzle-orm';
 import { users, tokens } from "../db/schema.js";
 import { db } from "../db/index.js";
@@ -9,7 +9,7 @@ import { db } from "../db/index.js";
 type Cookie = Pick<typeof users.$inferSelect, "id">;
 
 // Create an instance of the authenticator
-export const authenticator = new Authenticator<Cookie>(sessionStorage);
+export const authenticator = new Authenticator<Cookie>(getSessionStorage());
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
   throw new Error("Missing Google OAuth credentials");

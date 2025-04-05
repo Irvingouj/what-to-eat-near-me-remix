@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { createRequestHandler } from "@remix-run/express";
 import type { ViteDevServer } from 'vite';
 import type { ServerBuild } from "@remix-run/node";
@@ -6,7 +7,6 @@ import express from "express";
 import morgan from "morgan";
 import apiRouter from './src/api/index.js';
 import { startupCheck } from "./src/utils/startup.js";
-import 'dotenv/config';
 
 let viteDevServer: ViteDevServer | undefined;
 
