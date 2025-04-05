@@ -14,7 +14,7 @@
     "db:generate": "drizzle-kit generate --config drizzle.config.ts",
     "db:studio": "drizzle-kit studio --config drizzle.config.ts",
     "db:push": "drizzle-kit push --config drizzle.config.ts",
-    "db:migrate": "npx drizzle-kit migrate --config drizzle.config.ts"
+    "db:migrate": "drizzle-kit migrate --config drizzle.config.ts"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
@@ -41,6 +41,7 @@
     "remix-auth-google": "^2.0.0",
     "swiper": "^11.2.6",
     "tsconfig-paths": "^4.2.0",
+    "drizzle-kit": "^0.30.6",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -54,7 +55,6 @@
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "autoprefixer": "^10.4.19",
-    "drizzle-kit": "^0.30.6",
     "eslint": "^8.38.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.28.1",
