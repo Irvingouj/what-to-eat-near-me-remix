@@ -23,7 +23,7 @@ const defaultConfig = {
 
 let __config: AppConfig | undefined = undefined;
 
-export const initConfig = async () => {
+const initConfig = async () => {
     const config = await db.query.appConfig.findFirst();
     if (!config) {
         await db.insert(appConfig).values({
