@@ -73,7 +73,7 @@ const initServer = async () => {
   // All other routes go to Remix
   app.all("*", remixHandler);
 
-  const port = process.env.PORT || 3000;
+  const port = Number(process.env.PORT) || 3000;
   app.listen(port, '0.0.0.0', () =>
     console.log(`Express server listening at http://0.0.0.0:${port}`)
   );
