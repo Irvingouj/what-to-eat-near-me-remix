@@ -1,3 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS postgis;
 CREATE TABLE "places" (
 	"id" text PRIMARY KEY NOT NULL,
 	"location" geography(Point, 4326) NOT NULL,
