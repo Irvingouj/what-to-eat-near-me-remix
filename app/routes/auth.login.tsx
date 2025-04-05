@@ -1,6 +1,20 @@
 import { Form } from "@remix-run/react";
-import type { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { authenticator } from "common/auth/auth.server";
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Sign In - What to Eat Near Me" },
+    { name: "description", content: "Sign in to What to Eat Near Me to save your preferences and get personalized restaurant recommendations." },
+    { name: "robots", content: "noindex, nofollow" },
+    // Open Graph
+    { property: "og:title", content: "Sign In - What to Eat Near Me" },
+    { property: "og:description", content: "Sign in to What to Eat Near Me to save your preferences and get personalized restaurant recommendations." },
+    // Twitter
+    { name: "twitter:title", content: "Sign In - What to Eat Near Me" },
+    { name: "twitter:description", content: "Sign in to What to Eat Near Me to save your preferences and get personalized restaurant recommendations." },
+  ];
+};
 
 export const loader: LoaderFunction = async ({ request }) => {
   // If the user is already authenticated redirect to /

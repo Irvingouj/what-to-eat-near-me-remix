@@ -8,8 +8,14 @@ import { RestaurantProvider, useRestaurant } from "~/context/RestaurantContext";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "What to Eat Near Me" },
-    { name: "description", content: "Find great places to eat near you!" },
+    { title: "What to Eat Near Me - Restaurant Finder" },
+    { name: "description", content: "Let us help you decide where to eat! Our smart restaurant finder uses your location to suggest great places to eat nearby." },
+    // Open Graph
+    { property: "og:title", content: "What to Eat Near Me - Restaurant Finder" },
+    { property: "og:description", content: "Let us help you decide where to eat! Our smart restaurant finder uses your location to suggest great places to eat nearby." },
+    // Twitter
+    { name: "twitter:title", content: "What to Eat Near Me - Restaurant Finder" },
+    { name: "twitter:description", content: "Let us help you decide where to eat! Our smart restaurant finder uses your location to suggest great places to eat nearby." },
   ];
 };
 
