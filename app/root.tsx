@@ -51,6 +51,7 @@ export default function App() {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <script defer src="https://umami.phtiana.com/script.js" data-website-id="61e5d3a2-b1d8-45f8-a914-e66fd30f1b57"></script>
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
