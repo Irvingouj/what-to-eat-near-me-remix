@@ -1,4 +1,4 @@
-# Full-Stack TypeScript App with Remix and Express
+# What to Eat Near Me 🍕
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 [![Remix](https://img.shields.io/badge/Remix-2.0-purple)](https://remix.run/)
@@ -6,7 +6,26 @@
 [![Vite](https://img.shields.io/badge/Vite-5.0-yellow)](https://vitejs.dev/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A modern full-stack TypeScript application template combining Remix for server-side rendering and React features with Express for backend services. This setup provides a powerful foundation for building scalable web applications with real-time capabilities.
+## 🤔 What's This?
+
+Ever been stuck in that endless "I don't know, what do you want to eat?" loop? Yeah, we've all been there. 
+This app is basically Google Maps with a food-obsessed personality. It helps you:
+
+- **Find Food. Like, Now.** Shows you restaurants near you without the fancy algorithms - just good ol' proximity search
+- **See What's Actually Open** Because nobody likes driving to a closed restaurant
+- **Quick Filters** Vegetarian? Broke? Late night munchies? We got you covered with some basic filters
+- **Just Enough Info** Opening hours, ratings, and a direct link to Google Maps (let's be honest, that's where you're going to end up anyway)
+
+Check it out at [whattoeatnearme.com](https://whattoeatnearme.com/) - it's like Google Maps' hungry cousin!
+
+## 🛠️ For the Nerdy Bits
+
+This is a TypeScript app built with Remix and Express because we like our code like we like our food - type-safe and hot-reloaded. 
+(That was a terrible dev joke, but we're keeping it.)
+
+## 🛠️ Technical Overview
+
+A modern full-stack TypeScript application combining Remix for server-side rendering and React features with Express for backend services. This setup provides a powerful foundation for building scalable web applications with real-time capabilities.
 
 ## 🚀 Features
 
