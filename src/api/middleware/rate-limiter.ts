@@ -6,11 +6,11 @@ import { eq, and } from "drizzle-orm";
 import { getConfig } from "../../../common/config.js";
 import { RateLimitExceededError, NotAuthenticatedError } from "../../../common/errors/error.js";
 import { middleware } from "../../utils/handler.js";
-const RATE_LIMIT_ROUTES = ['/nearby'];
 
+const RATE_LIMIT_ROUTES = ['/nearby'];
 async function rateLimiterImpl(req: Request, res: Response, next: NextFunction) {
     if (!RATE_LIMIT_ROUTES.includes(req.path)) {
-        next();
+        return next();
     }
 
     const user = getUser(res);
@@ -19,9 +19,10 @@ async function rateLimiterImpl(req: Request, res: Response, next: NextFunction) 
         throw NotAuthenticatedError();
     }
     const type = user?.id ? 'user' : 'ip';
+    const config = await getConfig();
 
-    const rateLimit = getConfig().rateLimit[type]; // requests
-    const window = getConfig().rateLimit.window; // 1 hour 
+    const rateLimit = config.rateLimit.find(r => r.path === req.path)?.[type] ?? config.defaultRateLimit[type];
+    const window = config.rateLimit.find(r => r.path === req.path)?.window ?? config.defaultRateLimit.window;
     let isTooManyRequests = false;
 
     await db.transaction(async (tx) => {
@@ -30,7 +31,8 @@ async function rateLimiterImpl(req: Request, res: Response, next: NextFunction) 
         const record = await tx.query.rateLimits.findFirst({
             where: and(
                 eq(rateLimits.key, key),
-                eq(rateLimits.type, type)
+                eq(rateLimits.type, type),
+                eq(rateLimits.path, req.path)
             ),
         });
 
@@ -62,6 +64,7 @@ async function rateLimiterImpl(req: Request, res: Response, next: NextFunction) 
             await tx.insert(rateLimits).values({
                 key,
                 type,
+                path: req.path,
                 hits: validHits.join(','),
             });
         }
@@ -71,7 +74,7 @@ async function rateLimiterImpl(req: Request, res: Response, next: NextFunction) 
         throw RateLimitExceededError({ retryAfter: 60 * 60 * 1000 });
     }
 
-    next();
+    return next();
 }
 
 

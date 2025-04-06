@@ -7,6 +7,7 @@ import { ApiError } from "common/errors/error";
 import { useNavigate } from "@remix-run/react";
 import { SearchRange } from "~/types/range";
 import { Place } from "common/type/nearby";
+import { useUser } from "./UserContext";
 
 interface Filters {
     excludeFastFood: boolean;
@@ -58,10 +59,17 @@ function useRestaurantContextCreator() {
         places: 'not set' as 'not set' | EqSet<PlaceWithSeen>
     });
 
+    const { currentUser } = useUser();
+
     // Replace searchRestaurant with React Query
     const { refetch: searchRestaurant, isFetching: isSearching, data: places } = useQuery<Place[]>({
         queryKey: ['restaurants'],
         queryFn: async () => {
+            const isAuthenticated = currentUser !== null;
+            if (!isAuthenticated) {
+                navigate("/auth/login");
+                return [];
+            }
             const position = await getLocation();
             if (!position) throw new Error("Location not available");
             setState(prev => ({ ...prev, loading: true, error: null }));
@@ -129,12 +137,14 @@ function useRestaurantContextCreator() {
 
                     if (error instanceof ApiError && error.statusCode === 401) {
                         navigate("/auth/login");
-                        return;
                     }
+                    return;
                 }
-                throw new Error("No restaurants available");
             }
-            chooseInner(places);
+
+            if (places) {
+                chooseInner(places);
+            }
         } else {
             chooseInner(state.places.toArray());
         }

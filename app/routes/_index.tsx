@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
-import type { MetaFunction } from "@remix-run/node";
+import { type MetaFunction, useLoaderData } from "@remix-run/react";
 import { LoadingScreen } from "~/components/loadingscreen";
 import { ResultScreen } from "~/components/resultscreen";
 import { FilterModal } from "~/components/filtermodal";
 import { LandingScreen } from "~/components/landingscreen";
 import { RestaurantProvider, useRestaurant } from "~/context/RestaurantContext";
+import { authenticator } from "common/auth/auth.server";
+import { db } from "common/db";
+import { users } from "common/db/schema";
+import { eq } from "drizzle-orm";
+import { UserProvider } from "~/context/UserContext";
+import { LoaderFunctionArgs } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
@@ -18,6 +24,19 @@ export const meta: MetaFunction = () => {
     { name: "twitter:description", content: "Let us help you decide where to eat! Our smart restaurant finder uses your location to suggest great places to eat nearby." },
   ];
 };
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const cookie = await authenticator.isAuthenticated(request);
+  if (cookie?.id) {
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, cookie.id),
+    });
+
+    return Response.json({ user });
+  }
+
+  return Response.json({});
+}
 
 function IndexContent() {
   const [currentScreen, setCurrentScreen] = useState<"landing" | "loading" | "result">("landing");
@@ -78,9 +97,12 @@ function IndexContent() {
 }
 
 export default function Index() {
+  const { user } = useLoaderData<typeof loader>();
   return (
-    <RestaurantProvider>
-      <IndexContent />
-    </RestaurantProvider>
+    <UserProvider user={user}>
+      <RestaurantProvider>
+        <IndexContent />
+      </RestaurantProvider>
+    </UserProvider>
   );
 }

@@ -1,13 +1,13 @@
-import { Review } from "src/api/nearby/types";
+import { Review } from "common/type/nearby";
 import { useState } from "react";
 
 interface ReviewsSectionProps {
   reviews: Review[];
 }
 
-function ReviewText({ text }: { text: string }) {
+function ReviewText({ text }: { text?: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const shouldShowButton = text.length > 150;
+  const shouldShowButton = text && text.length > 150;
 
   return (
     <div className="text-gray-600 text-sm">

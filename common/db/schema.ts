@@ -44,11 +44,12 @@ export const rateLimits = pgTable('rate_limits', {
     id: integer('id').primaryKey().notNull().generatedByDefaultAsIdentity(),
     key: text('key').notNull(),
     type: varchar('type', { length: 10 }).notNull(),
+    path: text('path').notNull().default('/'),
     hits: text('hits').notNull(),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
 }, (table) => [
-    index('key_type_idx').on(table.key, table.type),
+    index('key_type_path_idx').on(table.key, table.type, table.path),
 ]);
 
 export const appConfig = pgTable('app_config', {

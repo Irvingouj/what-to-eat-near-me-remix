@@ -23,11 +23,10 @@ export function NotFoundError() {
     return new ApiError('Not found', 404);
 }
 
-
-
 export type RateLimitExceededErrorData = {
     retryAfter: number;
 }
+
 export function RateLimitExceededError<T extends RateLimitExceededErrorData>(data: T) {
     return new ApiError('Rate limit exceeded', 429, data);
 }
