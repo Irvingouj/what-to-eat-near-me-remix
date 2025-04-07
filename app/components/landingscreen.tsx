@@ -18,9 +18,9 @@ export function LandingScreen({ error }: LandingScreenProps) {
   }, [chooseRestaurant]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-      <h1 className="text-4xl font-bold text-red-600 mb-10">
-        🍴 WHAT TO EAT NEAR ME
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 sm:p-8 md:p-10 text-center">
+      <h1 className="text-4xl font-extrabold tracking-tight text-red-600 mb-8 md:mb-12 leading-tight">
+        🍴 WHAT TO EAT<br className="md:hidden" /> NEAR ME
       </h1>
 
       <button
@@ -28,13 +28,13 @@ export function LandingScreen({ error }: LandingScreenProps) {
         onClick={() => {
           chooseRestaurant();
         }}
-        className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xl font-bold py-6 px-10 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 flex items-center animate-bounce-slow"
+        className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xl sm:text-2xl font-bold py-5 sm:py-6 md:py-7 px-8 sm:px-10 md:px-12 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 flex items-center animate-bounce-slow w-auto sm:w-auto"
       >
-        <span className="mr-2">🎲</span> CHOOSE FOR ME
+        <span className="mr-3 text-2xl">🎲</span> CHOOSE FOR ME
       </button>
 
-      <div className="mt-6 w-full max-w-xs">
-        <label htmlFor="search-range" className="block text-sm font-medium text-red-600 mb-1">
+      <div className="mt-8 w-full max-w-sm sm:max-w-md">
+        <label htmlFor="search-range" className="block text-sm sm:text-base font-medium text-red-600 mb-2">
           Search Range: {searchRange}m
         </label>
         <input
@@ -45,18 +45,18 @@ export function LandingScreen({ error }: LandingScreenProps) {
           step="500"
           value={searchRange}
           onChange={(e) => updateSearchRange(parseInt(e.target.value) as SearchRange)}
-          className="w-full h-1.5 bg-red-200 rounded-lg appearance-none cursor-pointer accent-red-600"
+          className="w-full h-2 sm:h-3 bg-red-200 rounded-lg appearance-none cursor-pointer accent-red-600"
         />
-        <div className="flex justify-between text-xs text-red-500 mt-0.5">
+        <div className="flex justify-between text-sm text-red-500 mt-1">
           <span>500m</span>
           <span>5000m</span>
         </div>
       </div>
 
       {error ? (
-        <p className="mt-6 text-sm text-red-600">{error instanceof Error ? error.message : error}</p>
+        <p className="mt-6 sm:mt-8 text-sm sm:text-base text-red-600">{error instanceof Error ? error.message : error}</p>
       ) : (
-        <p className="mt-6 text-sm text-gray-600">We&apos;ll use your location when you tap.</p>
+        <p className="mt-6 sm:mt-8 text-sm sm:text-base text-gray-600">We&apos;ll use your location when you tap.</p>
       )}
     </div>
   );

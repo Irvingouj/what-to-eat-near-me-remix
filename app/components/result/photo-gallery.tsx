@@ -1,4 +1,4 @@
-import { Photo } from "src/api/nearby/types";
+import { Photo } from "common/type/nearby";
 import { clientGetImageUrl } from "src/utils/google";
 import { useState } from "react";
 // Import Swiper React components

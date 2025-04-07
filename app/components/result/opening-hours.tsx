@@ -1,5 +1,5 @@
+import { RegularOpeningHours } from "common/type/nearby";
 import { useState } from "react";
-import { RegularOpeningHours } from "src/api/nearby/types";
 
 interface OpeningHoursProps {
   regularOpeningHours?: RegularOpeningHours;
