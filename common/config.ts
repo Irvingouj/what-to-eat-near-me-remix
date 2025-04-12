@@ -47,6 +47,8 @@ const initConfig = async () => {
     }
 
     const config = await db.query.appConfig.findFirst();
+    //delete all old configs
+    await db.delete(appConfig)
 
     if (!config) {
         return await insertDefaultConfig();
