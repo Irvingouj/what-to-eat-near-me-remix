@@ -56,6 +56,10 @@ function IndexContent() {
       setCurrentScreen("landing");
     } else if (currentPlace) {
       setCurrentScreen("result");
+    } else if (loading) {
+      setCurrentScreen("loading");
+    } else {
+      setCurrentScreen("landing");
     }
   }, [loading, error, currentPlace]);
 

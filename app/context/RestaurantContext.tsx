@@ -81,11 +81,6 @@ function useRestaurantContextCreator() {
     const { refetch: searchRestaurant, isFetching: isSearching, data: places } = useQuery<Place[]>({
         queryKey: ['restaurants'],
         queryFn: async () => {
-            const isAuthenticated = currentUser !== null;
-            if (!isAuthenticated) {
-                navigate("/auth/login");
-                return [];
-            }
             const position = await getLocation();
             if (!position) throw new Error("Location not available");
             setState(prev => ({ ...prev, loading: true, error: null }));
@@ -101,7 +96,8 @@ function useRestaurantContextCreator() {
         },
         enabled: false, // Don't run automatically
         staleTime: Infinity,
-        gcTime: Infinity
+        gcTime: Infinity,
+
     });
 
     useEffect(() => {
@@ -149,6 +145,11 @@ function useRestaurantContextCreator() {
 
 
         if (state.places === 'not set') {
+            if (!currentUser) {
+                navigate("/auth/login");
+                return;
+            }
+
             const { data: places, error, isSuccess } = await searchRestaurant();
 
             if (!isSuccess || !places || places.length === 0 || error) {
