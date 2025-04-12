@@ -9,6 +9,7 @@ import { middleware } from "../../utils/handler.js";
 
 const RATE_LIMIT_ROUTES = ['/nearby'];
 async function rateLimiterImpl(req: Request, res: Response, next: NextFunction) {
+
     if (!RATE_LIMIT_ROUTES.includes(req.path)) {
         return next();
     }

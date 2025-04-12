@@ -7,15 +7,19 @@ interface LandingScreenProps {
 }
 
 export function LandingScreen({ error }: LandingScreenProps) {
-  const { chooseRestaurant, updateSearchRange, searchRange } = useRestaurant();
+  const { chooseRestaurant, updateSearchRange, searchRange, error: restaurantError } = useRestaurant();
   // check that if current url has a search param of startChoose=true, then chooseRestaurant
   useEffect(() => {
+    if (restaurantError) {
+      return;
+    }
+
     const searchParams = new URLSearchParams(window.location.search);
     const startChoose = searchParams.get("startChoose");
     if (startChoose) {
       chooseRestaurant();
     }
-  }, [chooseRestaurant]);
+  }, [chooseRestaurant, restaurantError]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-6 sm:p-8 md:p-10 text-center">

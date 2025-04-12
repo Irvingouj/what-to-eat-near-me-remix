@@ -13,6 +13,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
 import { simpleHash } from "common/utils";
+import { Image } from "./image";
 // Custom Swiper styles
 const swiperStyles = `
   .swiper-button-next,
@@ -86,10 +87,10 @@ export function PhotoGallery({ photos, placeName }: PhotoGalleryProps) {
               onClick={(e) => handleImageClick(e, index)}
               className="block w-full h-full"
             >
-              <img
+              <Image
                 src={clientGetImageUrl(photo)}
                 alt={`View ${index + 1} of ${placeName}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover "
               />
             </button>
           </SwiperSlide>
@@ -109,7 +110,7 @@ export function PhotoGallery({ photos, placeName }: PhotoGalleryProps) {
         {photos.map((photo, index) => (
           <SwiperSlide key={photo.name} className="!w-24">
             <div className="w-full h-full swiper-thumb">
-              <img
+              <Image
                 src={clientGetImageUrl(photo, { height: 100, width: 100 })}
                 alt={`Thumbnail ${index + 1}`}
                 className="w-full h-full object-cover rounded"
@@ -150,7 +151,7 @@ export function PhotoGallery({ photos, placeName }: PhotoGalleryProps) {
             )}
 
             {/* Main Image */}
-            <img
+            <Image
               src={clientGetImageUrl(photos[currentImageIndex], { height: 800, width: 1200 })}
               alt={`View ${currentImageIndex + 1} of ${placeName}`}
               className="w-full h-auto max-h-[80vh] object-contain"

@@ -57,6 +57,9 @@ export type useRestaurantError = {
     type: 'geolocation-error',
     error: string | null,
     prettyMessage: "An error occurred while getting your location"
+} | {
+    type: 'rate-limited',
+    prettyMessage: "You have been rate limited. Please try again later."
 }
 
 function useRestaurantContextCreator() {
@@ -166,6 +169,17 @@ function useRestaurantContextCreator() {
                     if (error instanceof ApiError && error.statusCode === 401) {
                         navigate("/auth/login");
                     }
+
+                    if (error instanceof ApiError && error.statusCode === 429) {
+                        setState(prev => ({
+                            ...prev,
+                            error: {
+                                type: 'rate-limited',
+                                prettyMessage: "You have been rate limited. Please try again later."
+                            }
+                        }));
+                    }
+
                     return;
                 }
             }
@@ -177,7 +191,7 @@ function useRestaurantContextCreator() {
             chooseInner(state.places.toArray());
         }
 
-    }, [state.places, state.currentPlace, searchRestaurant, state.filters, navigate]);
+    }, [state.places, state.currentPlace, searchRestaurant, state.filters, navigate, currentUser]);
 
     const updateSearchRange = useCallback((newRange: SearchRange) => {
         setState(prev => ({
