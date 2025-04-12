@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode, useCallback, useEffect } from "react";
+import { createContext, useContext, useState, ReactNode, useCallback, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchNearbyPlaces } from "~/services/places";
 import { useGeolocation } from "~/hooks/useGeolocation";
@@ -43,12 +43,28 @@ function filterPlaces(places: PlaceWithSeen[], filters: Filters): PlaceWithSeen[
     });
 }
 
+export type useRestaurantError = {
+    type: 'unknown',
+    error: Error,
+    prettyMessage: "An unknown error occurred"
+} | {
+    type: 'run-out-of-restaurants',
+    prettyMessage: "No more restaurants found"
+} | {
+    type: 'no-restaurants-nearby',
+    prettyMessage: "No restaurants found nearby"
+} | {
+    type: 'geolocation-error',
+    error: string | null,
+    prettyMessage: "An error occurred while getting your location"
+}
+
 function useRestaurantContextCreator() {
     const { loading: geoLoading, error: geoError, getLocation } = useGeolocation();
     const navigate = useNavigate();
     const [state, setState] = useState({
         currentPlace: null as PlaceWithSeen | null,
-        error: null as Error | null,
+        error: null as useRestaurantError | null,
         searchRange: 1500 as SearchRange,
         filters: {
             excludeFastFood: false,
@@ -112,7 +128,14 @@ function useRestaurantContextCreator() {
         const chooseInner = (places: PlaceWithSeen[]) => {
             const filteredPlaces = filterPlaces(places, state.filters);
             if (filteredPlaces.length === 0) {
-                throw new Error("No restaurants found matching your criteria");
+                setState(prev => ({
+                    ...prev,
+                    error: {
+                        type: 'run-out-of-restaurants',
+                        prettyMessage: "No more restaurants found"
+                    }
+                }));
+                return;
             }
 
             const randomIndex = Math.floor(Math.random() * filteredPlaces.length);
@@ -132,7 +155,11 @@ function useRestaurantContextCreator() {
                 if (error) {
                     setState(prev => ({
                         ...prev,
-                        error: error
+                        error: {
+                            type: 'unknown',
+                            error: error,
+                            prettyMessage: "An unknown error occurred"
+                        }
                     }));
 
                     if (error instanceof ApiError && error.statusCode === 401) {
@@ -158,10 +185,20 @@ function useRestaurantContextCreator() {
         }));
     }, []);
 
+    const error = useMemo(() => {
+        if (geoError) {
+            return {
+                type: 'geolocation-error',
+                error: geoError
+            } as useRestaurantError;
+        }
+        return state.error;
+    }, [geoError, state.error]);
+
     return {
         ...state,
         loading: geoLoading || isSearching,
-        error: state.error || geoError,
+        error,
         updateFilters,
         chooseRestaurant,
         updateSearchRange

@@ -1,6 +1,6 @@
 import { Photo } from "common/type/nearby";
 import { clientGetImageUrl } from "src/utils/google";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 // Import required modules
@@ -12,7 +12,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
-
+import { simpleHash } from "common/utils";
 // Custom Swiper styles
 const swiperStyles = `
   .swiper-button-next,
@@ -64,12 +64,14 @@ export function PhotoGallery({ photos, placeName }: PhotoGalleryProps) {
     setIsModalOpen(true);
   };
 
+  const swiperKey = useMemo(() => simpleHash(photos.map((p, idx) => `${idx}-${clientGetImageUrl(p)}`).join('|')), [photos]);
   if (!photos || photos.length === 0) return null;
 
   return (
     <div className="mb-4 relative">
       <style>{swiperStyles}</style>
       <Swiper
+        key={swiperKey}
         modules={[Navigation, Pagination, Thumbs]}
         spaceBetween={10}
         slidesPerView={1}
@@ -79,7 +81,7 @@ export function PhotoGallery({ photos, placeName }: PhotoGalleryProps) {
         className="h-64 rounded-lg mb-2"
       >
         {photos.map((photo, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={photo.name}>
             <button
               onClick={(e) => handleImageClick(e, index)}
               className="block w-full h-full"
@@ -105,7 +107,7 @@ export function PhotoGallery({ photos, placeName }: PhotoGalleryProps) {
         className="h-16"
       >
         {photos.map((photo, index) => (
-          <SwiperSlide key={index} className="!w-24">
+          <SwiperSlide key={photo.name} className="!w-24">
             <div className="w-full h-full swiper-thumb">
               <img
                 src={clientGetImageUrl(photo, { height: 100, width: 100 })}

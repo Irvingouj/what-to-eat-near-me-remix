@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useRestaurant } from "~/context/RestaurantContext";
+import { useRestaurant, useRestaurantError } from "~/context/RestaurantContext";
 import { SearchRange } from "~/types/range";
 
 interface LandingScreenProps {
-  error: string | null | Error;
+  error: useRestaurantError | null;
 }
 
 export function LandingScreen({ error }: LandingScreenProps) {
@@ -54,7 +54,7 @@ export function LandingScreen({ error }: LandingScreenProps) {
       </div>
 
       {error ? (
-        <p className="mt-6 sm:mt-8 text-sm sm:text-base text-red-600">{error instanceof Error ? error.message : error}</p>
+        <p className="mt-6 sm:mt-8 text-sm sm:text-base text-red-600">{error.prettyMessage}</p>
       ) : (
         <p className="mt-6 sm:mt-8 text-sm sm:text-base text-gray-600">We&apos;ll use your location when you tap.</p>
       )}
